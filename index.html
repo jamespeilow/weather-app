@@ -5,9 +5,28 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<script> 
+        </script>
 		<style>
+			body {
+				background: #00d2ff; /* fallback for old browsers */
+				background: -webkit-linear-gradient(to right, #00d2ff, #3a7bd5); /* Chrome 10-25, Safari 5.1-6 */
+				background: linear-gradient(to right, #00d2ff, #3a7bd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+				color: #ffffff;
+				font-family: sans-serif;
+			}
 			.weather {
 				display: none;
+				width: 500px;
+				height: 500px;
+				text-align: center;
+				border-radius: 50%;
+				background-color: #3e3e3e;
+				margin: auto;
+				padding: 40px;
+			}
+			svg path{
+				fill: blue;
 			}
 		</style>
 	</head>
@@ -19,7 +38,7 @@
 			<div class="weather hide">
 				<div class="location"></div>
 				<div class="weather-main">
-					<img class="weather-main-icon" id="weather-icon" src="img/rain.png">
+					<img class="weather-main-icon" id="weather-icon" src="img/Cloud-Rain.svg">
 					<p id="weather-text"></p>
 					<h2 id="weather-temp"></h2>
 				</div>

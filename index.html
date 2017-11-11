@@ -14,38 +14,204 @@
 				background: linear-gradient(to right, #00d2ff, #3a7bd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 				color: #ffffff;
 				font-family: sans-serif;
+				text-align: center;
+			}
+			.weather-sunny {
+				background: #e65c00;  /* fallback for old browsers */
+				background: -webkit-linear-gradient(to top, #F9D423, #e65c00);  /* Chrome 10-25, Safari 5.1-6 */
+				background: linear-gradient(to top, #F9D423, #e65c00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+			}
+			
+			.container {
+				width: 90%;
+				max-width: 900px;
+				margin: auto;
+					
+			}
+			.title {
+			}
+			.location-container {
+				margin: 30px auto;
+			}
+			.location {
+				font-size: 2em;
+				border-bottom: 3px white solid;
+				width: intrinsic;
+				margin: 30px auto; 	
 			}
 			.weather {
-				display: none;
-				width: 500px;
-				height: 500px;
-				text-align: center;
-				border-radius: 50%;
-				background-color: #3e3e3e;
+				width: 60%;
+				height: auto;
 				margin: auto;
-				padding: 40px;
+/* 				display: none; */
+
 			}
-			svg path{
-				fill: blue;
+			.weather-circle {
+				width: 100%;
+				height: auto;
+				padding-top: 100%;
+				border-radius: 50%;
+				background-color: rgba(200,200,200,0.4);
+				position: relative;
+				margin-bottom: 300px;
+			}
+			.weather-main {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+			.weather-main-icon {
+				margin-top: -10%;
+				margin-bottom: -5%;
+				width: 60%;
+				height: auto;
+/* 				margin-bottom: 5%; */
+			}
+			#weather-text {
+				padding: 2%;
+				margin: 0 auto;
+/* 				text-align: left; */
+				border-top: 1px white solid;
+				box-sizing: border-box;
+				width: 80%;
+			}
+			#weather-temp {
+				font-size: 3.5em;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right:0;
+				margin: 0;
+				padding-bottom: 10%;
+
 			}
 		</style>
 	</head>
-	<body>
+	<body class="">
 		<div class="container">
 			<div class="title">
 				<h1>Weather App</h1>
 			</div>
 			<div class="weather hide">
-				<div class="location"></div>
-				<div class="weather-main">
-					<img class="weather-main-icon" id="weather-icon" src="img/Cloud-Rain.svg">
-					<p id="weather-text"></p>
-					<h2 id="weather-temp"></h2>
+				<div class="location-container"><span class="location">Battersea, GB</span></div>
+				<div class="weather-circle">
+					<div class="weather-main">
+						<img class="weather-main-icon" id="weather-icon" src="img/Thermometer-50.svg">
+						<p id="weather-text">Broken Clouds</p>
+						<h2 id="weather-temp">9ºC</h2>
+					</div>
 				</div>
 			</div>
 		</div>	
 		
 		<script>
+/*
+			var weatherIconCodes = {
+				{
+					weatherType: "Thunderstorms",
+					weatherId: [201,202,211,212,221,231,232,901,961],
+					weatherIcon: "Cloud-Lightning.svg"
+				},
+				{
+					weatherType: "Light Thunderstorms",
+					weatherId: [200,210,220],
+					weatherIcon: "Cloud-Lightning-Sun.svg"
+				},
+				{
+					weatherType: "Drizzle",
+					weatherId: [300,301,302,310],
+					weatherIcon: "Cloud-Rain-Alt.svg"
+				},
+				{
+					weatherType: "Light Rain",
+					weatherId: [311,312,313,314,321,500],
+					weatherIcon: "Cloud-Drizzle-Alt.svg"
+				},
+				{
+					weatherType: "Shower",
+					weatherId: [520,521],
+					weatherIcon: "Cloud-Drizzle-Sun-Alt.svg"
+				},
+				{
+					weatherType: "Rain",
+					weatherId: [500, 501, 502],
+					weatherIcon: "Cloud-Drizzle.svg"
+				},
+				{
+					weatherType: "Heavy Rain",
+					weatherId: [503,504]
+					weatherIcon: "Cloud-Rain.svg"
+				},
+				{
+					weatherType: "Heavy Shower",
+					weatherId: [522,531],
+					weatherIcon: "Cloud-Rain-Sun.svg"
+				},
+				{
+					weatherType: "Freezing Rain",
+					weatherId: [511,612],
+					weatherIcon: "Cloud-Hail.svg"
+				},
+				{
+					weatherType: "Snow",
+					weatherId: [600,601,602],
+					weatherIcon: "Cloud-Snow-Alt.svg"
+				},
+				{
+					weatherType: "Snow Shower",
+					weatherId: [620,621,622],
+					weatherIcon: "Cloud-Snow-Sun-Alt.svg"
+				},
+				{
+					weatherType: "Sleet",
+					weatherId: [611,615,616],
+					weatherIcon: "Cloud-Snow.svg"
+				},
+				{
+					weatherType: "Mist",
+					weatherId: [701,711,721,731,741,751,761,771],
+					weatherIcon: "Cloud-Fog-Alt.svg"
+				},
+				{
+					weatherType: "Tornado",
+					weatherId: [781,900.962],
+					weatherIcon: "Tornado.svg"
+				},
+				{
+					weatherType: "Clear",
+					weatherId: [800,904],
+					weatherIcon: "Sun.svg",
+				},
+				{
+					weatherType: "Few Clouds",
+					weatherId: [801],
+					weatherIcon: "Cloud-Sun.svg"
+				},
+				{
+					weatherType: "Clouds",
+					weatherId: [802,803,804],
+					weatherIcon: "Cloud.svg"
+				},
+				{
+					weatherType: "Cold",
+					weatherId: [903],
+					weatherIcon: "Thermometer-25.svg"
+				},
+				{
+					weatherType: "Windy",
+					weatherId: [905,925,953,954,956,957,958,959,960],
+					weatherIcon: "cloud-lightning.svg"
+				},
+				{
+					weatherType: "Hail",
+					weatherId: [906],
+					weatherIcon: "Cloud-Hail-Alt.svg"
+				}
+			};
+*/
 			var lat, lon, temp = 0;
 			var tempUnit = "C";
 			var returnedData;
@@ -79,6 +245,7 @@
 					returnedData = data;
 					tempUnit="C";
 					temp=data.main.temp;
+					$("#weather-icon").attr("src", "img/"+getWeatherIcon(data));
 					$("#weather-temp").text(getWeatherDegrees(temp));
 					$("#weather-text").text(toTitleCase(data.weather[0].description));
 					$(".location").text(data.name+", "+data.sys.country);
@@ -102,6 +269,43 @@
 					temp = (temp-32)*5/9;
 					tempUnit = "C";
 				}
+			}
+			
+			function getWeatherIcon(weatherData) {
+				
+				var weatherIcon="";
+				switch (weatherData.weather[0].main) {
+					case "Thunderstorm":
+						weatherIcon = "Cloud-Lightning.svg";
+						break;
+					case "Drizzle":
+						weatherIcon = "Cloud-Drizzle.svg";
+						break;
+					case "Rain":
+						weatherIcon = "Cloud-Rain.svg";
+						break;
+					case "Snow":
+						weatherIcon = "Cloud-Snow-Alt.svg";
+						break;
+					case "Atmosphere":
+						weatherIcon = "Cloud-Fog-Alt.svg";
+						break;
+					case "Clear":
+						weatherIcon = "Sun.svg";
+						break;
+					case "Clouds":
+						weatherIcon = "Cloud.svg";
+						break;
+					case "Extreme":
+						weatherIcon = "Tornado.svg";
+						break;
+					case "Additional":
+						weatherIcon = "Wind.svg";
+						break;
+					default:
+						weatherIcon = "Thermometer-50.svg";
+				}
+				return weatherIcon;
 			}
 			
 			function toggleTemp() {

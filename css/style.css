@@ -1,0 +1,100 @@
+body {
+				background: #00d2ff; /* fallback for old browsers */
+				background: -webkit-linear-gradient(to right, #00d2ff, #3a7bd5); /* Chrome 10-25, Safari 5.1-6 */
+				background: linear-gradient(to right, #00d2ff, #3a7bd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+				color: #ffffff;
+				font-family: sans-serif;
+				text-align: center;
+			}
+			.weather-sunny {
+				background: #e65c00;  /* fallback for old browsers */
+				background: -webkit-linear-gradient(to top, #F9D423, #e65c00);  /* Chrome 10-25, Safari 5.1-6 */
+				background: linear-gradient(to top, #F9D423, #e65c00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+			}
+			
+			.container {
+				width: 90%;
+				max-width: 900px;
+				margin: auto;
+					
+			}
+			.title {
+			}
+			.location-input {
+				background: transparent;
+				border: none;
+				border-bottom: 2px white solid;
+				font-size: 1.2em;
+				color: white;
+				padding: 5px;
+			}
+			.location-input:focus {
+				border: 2px white solid;
+				
+			}
+			.location-container {
+				margin: 30px auto;
+			}
+			.location {
+				font-size: 2em;
+				border-bottom: 3px white solid;
+				width: intrinsic;
+				margin: 30px auto; 	
+			}
+			.weather {
+				width: 60%;
+				height: auto;
+				margin: auto;
+/* 				display: none; */
+
+			}
+			.weather-circle {
+				width: 100%;
+				height: auto;
+				padding-top: 100%;
+				border-radius: 50%;
+				background-color: rgba(200,200,200,0.4);
+				position: relative;
+				margin-bottom: 300px;
+			}
+			.weather-main {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+			}
+			.weather-main-icon {
+				margin: -10% auto;
+				width: 60%;
+				height: auto;
+				position: absolute;
+				bottom: 50%;
+				left: 0;
+				right: 0;
+				
+/* 				margin-bottom: 5%; */
+			}
+			#weather-text {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 50%;
+				padding: 2%;
+				margin: 0 auto;
+/* 				text-align: left; */
+				border-top: 1px white solid;
+				box-sizing: border-box;
+				width: 80%;
+			}
+			#weather-temp {
+				font-size: 3.5em;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right:0;
+				margin: 0;
+				padding-bottom: 10%;
+
+			}

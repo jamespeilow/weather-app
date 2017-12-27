@@ -102,117 +102,117 @@
 				}
 			};
 */
-			var lat, lon, temp = 0;
-			var tempUnit = "C";
-			var returnedData;
-			$( document ).ready(function() {
-				console.log( "ready!" );
-				getLocation();
-				$("#weather-temp").click(function() {
-					toggleTemp();
-				});
+var lat, lon, temp = 0;
+var tempUnit = "C";
+var returnedData;
+$( document ).ready(function() {
+	console.log( "ready!" );
+	getLocation();
+	$("#weather-temp").click(function() {
+		toggleTemp();
+	});
 
-				
-			});
-			function getLocation() {
-			    if (navigator.geolocation) {
-			        navigator.geolocation.getCurrentPosition(showPosition);
-			    } else {
-			        alert("Geolocation is not supported by this browser.");
-			    }
-			    
-			}
-			function showPosition(position) {
-				lat = position.coords.latitude;
-				lon = position.coords.longitude;
-				getWeather(lat, lon);
-			}
-			
-			function getWeather(lat, lon) {
-				url = "https://fcc-weather-api.glitch.me/api/current?lat="+lat+"&lon="+lon;
-				$.getJSON(url, function(data) {
-					console.log(data);
-					returnedData = data;
-					tempUnit="C";
-					temp=data.main.temp;
-					$("#weather-icon").attr("src", "img/"+getWeatherIcon(data));
-					$("#weather-temp").text(getWeatherDegrees(temp));
-					$("#weather-text").text(toTitleCase(data.weather[0].description));
-					$(".location").text(data.name+", "+data.sys.country);
-					$(".weather").fadeIn("slow");
-				})
-			}
-			
-			function getWeatherDegrees(temp, rounding=true,) {
-				if (rounding) {
-					temp = Math.round(temp);
-				}
-				return temp+String.fromCharCode(176)+tempUnit;
-			}
-			
-			function tempConvert() {
-				if (tempUnit=="C") {
-					//Convert to F
-					temp = temp*9/5+32;
-					tempUnit = "F";
-				} else if (tempUnit=="F") {
-					temp = (temp-32)*5/9;
-					tempUnit = "C";
-				}
-			}
-			
-			function getWeatherIcon(weatherData) {
-				
-				var weatherIcon="";
-				switch (weatherData.weather[0].main) {
-					case "Thunderstorm":
-						weatherIcon = "Cloud-Lightning.svg";
-						break;
-					case "Drizzle":
-						weatherIcon = "Cloud-Drizzle.svg";
-						break;
-					case "Rain":
-						weatherIcon = "Cloud-Rain.svg";
-						break;
-					case "Snow":
-						weatherIcon = "Cloud-Snow-Alt.svg";
-						break;
-					case "Atmosphere":
-						weatherIcon = "Cloud-Fog-Alt.svg";
-						break;
-					case "Clear":
-						weatherIcon = "Sun.svg";
-						break;
-					case "Clouds":
-						weatherIcon = "Cloud.svg";
-						break;
-					case "Extreme":
-						weatherIcon = "Tornado.svg";
-						break;
-					case "Additional":
-						weatherIcon = "Wind.svg";
-						break;
-					default:
-						weatherIcon = "Thermometer-50.svg";
-				}
-				return weatherIcon;
-			}
-			
-			function toggleTemp() {
-				tempConvert();
-				$("#weather-temp").fadeOut(function() {
-					$("#weather-temp").text(getWeatherDegrees(temp));
-					$("#weather-temp").fadeIn();
-				});
-			}
-			
-			function toTitleCase(str) {
-				str = str.toLowerCase();
-				var words = str.split(' ');
-				for (var word in words) {
-					words[word] = words[word].charAt(0).toUpperCase() + words[word].slice(1);
-				}
-				str = words.join(' ');
-				return str;				
-			}
+	
+});
+function getLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(showPosition);
+	} else {
+		alert("Geolocation is not supported by this browser.");
+	}
+    
+}
+function showPosition(position) {
+	lat = position.coords.latitude;
+	lon = position.coords.longitude;
+	getWeather(lat, lon);
+}
+
+function getWeather(lat, lon) {
+	var url = "https://fcc-weather-api.glitch.me/api/current?lat="+lat+"&lon="+lon;
+	$.getJSON(url, function(data) {
+		console.log(data);
+		returnedData = data;
+		tempUnit="C";
+		temp=data.main.temp;
+		$("#weather-icon").attr("src", "img/"+getWeatherIcon(data));
+		$("#weather-temp").text(getWeatherDegrees(temp));
+		$("#weather-text").text(toTitleCase(data.weather[0].description));
+		$(".location").text(data.name+", "+data.sys.country);
+		$(".weather").fadeIn("slow");
+	});
+}
+
+function getWeatherDegrees(temp, rounding=true) {
+	if (rounding) {
+		temp = Math.round(temp);
+	}
+	return temp+String.fromCharCode(176)+tempUnit;
+}
+
+function tempConvert() {
+	if (tempUnit=="C") {
+		//Convert to F
+		temp = temp*9/5+32;
+		tempUnit = "F";
+	} else if (tempUnit=="F") {
+		temp = (temp-32)*5/9;
+		tempUnit = "C";
+	}
+}
+
+function getWeatherIcon(weatherData) {
+	
+	var weatherIcon="";
+	switch (weatherData.weather[0].main) {
+	case "Thunderstorm":
+		weatherIcon = "Cloud-Lightning.svg";
+		break;
+	case "Drizzle":
+		weatherIcon = "Cloud-Drizzle.svg";
+		break;
+	case "Rain":
+		weatherIcon = "Cloud-Rain.svg";
+		break;
+	case "Snow":
+		weatherIcon = "Cloud-Snow-Alt.svg";
+		break;
+	case "Atmosphere":
+		weatherIcon = "Cloud-Fog-Alt.svg";
+		break;
+	case "Clear":
+		weatherIcon = "Sun.svg";
+		break;
+	case "Clouds":
+		weatherIcon = "Cloud.svg";
+		break;
+	case "Extreme":
+		weatherIcon = "Tornado.svg";
+		break;
+	case "Additional":
+		weatherIcon = "Wind.svg";
+		break;
+	default:
+		weatherIcon = "Thermometer-50.svg";
+	}
+	return weatherIcon;
+}
+
+function toggleTemp() {
+	tempConvert();
+	$("#weather-temp").fadeOut(function() {
+		$("#weather-temp").text(getWeatherDegrees(temp));
+		$("#weather-temp").fadeIn();
+	});
+}
+
+function toTitleCase(str) {
+	str = str.toLowerCase();
+	var words = str.split(" ");
+	for (var word in words) {
+		words[word] = words[word].charAt(0).toUpperCase() + words[word].slice(1);
+	}
+	str = words.join(" ");
+	return str;				
+}
       

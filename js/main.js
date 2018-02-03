@@ -1,145 +1,88 @@
-/*
-			var weatherIconCodes = {
-				{
-					weatherType: "Thunderstorms",
-					weatherId: [201,202,211,212,221,231,232,901,961],
-					weatherIcon: "Cloud-Lightning.svg"
-				},
-				{
-					weatherType: "Light Thunderstorms",
-					weatherId: [200,210,220],
-					weatherIcon: "Cloud-Lightning-Sun.svg"
-				},
-				{
-					weatherType: "Drizzle",
-					weatherId: [300,301,302,310],
-					weatherIcon: "Cloud-Rain-Alt.svg"
-				},
-				{
-					weatherType: "Light Rain",
-					weatherId: [311,312,313,314,321,500],
-					weatherIcon: "Cloud-Drizzle-Alt.svg"
-				},
-				{
-					weatherType: "Shower",
-					weatherId: [520,521],
-					weatherIcon: "Cloud-Drizzle-Sun-Alt.svg"
-				},
-				{
-					weatherType: "Rain",
-					weatherId: [500, 501, 502],
-					weatherIcon: "Cloud-Drizzle.svg"
-				},
-				{
-					weatherType: "Heavy Rain",
-					weatherId: [503,504]
-					weatherIcon: "Cloud-Rain.svg"
-				},
-				{
-					weatherType: "Heavy Shower",
-					weatherId: [522,531],
-					weatherIcon: "Cloud-Rain-Sun.svg"
-				},
-				{
-					weatherType: "Freezing Rain",
-					weatherId: [511,612],
-					weatherIcon: "Cloud-Hail.svg"
-				},
-				{
-					weatherType: "Snow",
-					weatherId: [600,601,602],
-					weatherIcon: "Cloud-Snow-Alt.svg"
-				},
-				{
-					weatherType: "Snow Shower",
-					weatherId: [620,621,622],
-					weatherIcon: "Cloud-Snow-Sun-Alt.svg"
-				},
-				{
-					weatherType: "Sleet",
-					weatherId: [611,615,616],
-					weatherIcon: "Cloud-Snow.svg"
-				},
-				{
-					weatherType: "Mist",
-					weatherId: [701,711,721,731,741,751,761,771],
-					weatherIcon: "Cloud-Fog-Alt.svg"
-				},
-				{
-					weatherType: "Tornado",
-					weatherId: [781,900.962],
-					weatherIcon: "Tornado.svg"
-				},
-				{
-					weatherType: "Clear",
-					weatherId: [800,904],
-					weatherIcon: "Sun.svg",
-				},
-				{
-					weatherType: "Few Clouds",
-					weatherId: [801],
-					weatherIcon: "Cloud-Sun.svg"
-				},
-				{
-					weatherType: "Clouds",
-					weatherId: [802,803,804],
-					weatherIcon: "Cloud.svg"
-				},
-				{
-					weatherType: "Cold",
-					weatherId: [903],
-					weatherIcon: "Thermometer-25.svg"
-				},
-				{
-					weatherType: "Windy",
-					weatherId: [905,925,953,954,956,957,958,959,960],
-					weatherIcon: "cloud-lightning.svg"
-				},
-				{
-					weatherType: "Hail",
-					weatherId: [906],
-					weatherIcon: "Cloud-Hail-Alt.svg"
-				}
-			};
-*/
+var weatherClass = null;
+var debug = null;
 var lat, lon, temp = 0;
 var tempUnit = "C";
 var returnedData;
+var tempLow;
+var tempHigh;
+var wind;
 $( document ).ready(function() {
 	console.log( "ready!" );
-	getLocation();
-	$("#weather-temp").click(function() {
+	//getLocation();
+	$("#location-btn-gps").click(getLocation);
+	$("#location-btn-submit").click(getLocationFromInput);
+	$(".temps-info").click(function() {
 		toggleTemp();
-	});
-
-	
+	});	
 });
+
 function getLocation() {
 	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(showPosition);
+		navigator.geolocation.getCurrentPosition(showPosition, getLocationByIp); //showPosition callback on success, getLocationByIp on fail
 	} else {
-		alert("Geolocation is not supported by this browser.");
-	}
-    
+		console.log("Geolocation is not supported by this browser");
+	}    
 }
+
 function showPosition(position) {
 	lat = position.coords.latitude;
 	lon = position.coords.longitude;
 	getWeather(lat, lon);
 }
 
+function getLocationByIp() {
+	var url = "https://freegeoip.net/json/"
+	$.getJSON(url, function(data) {
+		returnedData = data;
+		console.log(data);
+		getWeather(returnedData.latitude, returnedData.longitude);
+	});	
+}
+function getLocationFromInput() {
+	var inputValue = $("#location-input").val();
+	console.log('pressed');
+	$.ajax({
+		type: "GET",
+		url: "https://maps.googleapis.com/maps/api/geocode/json?address="+encodeURIComponent(inputValue)+"&key=AIzaSyDlc1CDHP8y1ysWSI02biWlk0nNatQbHgY",
+		dataType: "json",
+		success: processJSON,
+	});
+	function processJSON(data) {
+		coords = data.results[0].geometry.location;
+		var googleData=[data];
+		console.log(googleData);
+		getWeather(coords.lat, coords.lng);
+	}
+}
+
+
+
 function getWeather(lat, lon) {
 	var url = "https://fcc-weather-api.glitch.me/api/current?lat="+lat+"&lon="+lon;
 	$.getJSON(url, function(data) {
 		console.log(data);
 		returnedData = data;
+		debug = data;
 		tempUnit="C";
-		temp=data.main.temp;
+		tempLow=returnedData.main.temp_min;
+		tempHigh=returnedData.main.temp_max;
+		wind=data.wind.speed;
+		$(".weather-main-info").removeClass(weatherClass).addClass(getBodyWeatherClass(data));
+		weatherClass = getBodyWeatherClass(data);
 		$("#weather-icon").attr("src", "img/"+getWeatherIcon(data));
-		$("#weather-temp").text(getWeatherDegrees(temp));
-		$("#weather-text").text(toTitleCase(data.weather[0].description));
-		$(".location").text(data.name+", "+data.sys.country);
-		$(".weather").fadeIn("slow");
+		$("#temps-info-low").text(getWeatherDegrees(tempLow));
+		$("#temps-info-high").text(getWeatherDegrees(tempHigh));
+		$("#humidity").text(data.main.humidity+"%");
+		$("#wind").text(data.wind.speed+"m/s");
+		$("#pressure").text(data.main.pressure+'hPa');
+		$("#weather-main-text").text(toTitleCase(data.weather[0].description));
+		if (!data.name || !data.sys.country) {
+			$(".location").text(" ");
+		} else {
+			$(".location").text(data.name+", "+data.sys.country);
+			$("#location-input").val(data.name+", "+data.sys.country);
+		}
+		$(".cover").addClass("hide");
 	});
 }
 
@@ -153,10 +96,14 @@ function getWeatherDegrees(temp, rounding=true) {
 function tempConvert() {
 	if (tempUnit=="C") {
 		//Convert to F
-		temp = temp*9/5+32;
+		tempLow = tempLow*9/5+32;
+		tempHigh = tempHigh*9/5+32;
+		wind = (wind/0.44704).toFixed(2);
 		tempUnit = "F";
 	} else if (tempUnit=="F") {
-		temp = (temp-32)*5/9;
+		tempLow = (tempLow-32)*5/9;
+		tempHigh = (tempHigh-32)*5/9;
+		wind = (wind*0.44704).toFixed(2);
 		tempUnit = "C";
 	}
 }
@@ -198,11 +145,50 @@ function getWeatherIcon(weatherData) {
 	return weatherIcon;
 }
 
+function getBodyWeatherClass(weatherData) {
+	var weatherClass="";
+	switch (weatherData.weather[0].main) {
+	case "Thunderstorm":
+	case "Extreme":
+		weatherClass = "weather-dark";
+		break;
+	case "Drizzle":
+	case "Rain":
+		weatherClass = "weather-rain";
+		break;
+	case "Snow":
+		weatherClass = "weather-snow";
+		break;
+	case "Atmosphere":
+		weatherClass = "weather-fog";
+		break;
+	case "Clear":
+		weatherClass = "weather-sunny";
+		break;
+	case "Clouds":
+	case "Additional":
+		weatherClass = "weather-clouds";
+		break;
+	default:
+		weatherClass = "";
+	}
+	return weatherClass;
+}
+
 function toggleTemp() {
 	tempConvert();
-	$("#weather-temp").fadeOut(function() {
-		$("#weather-temp").text(getWeatherDegrees(temp));
-		$("#weather-temp").fadeIn();
+	$("#wind").fadeOut();
+	$(".temps-info").fadeOut(function() {
+		$("#temps-info-low").text(getWeatherDegrees(tempLow));
+		$("#temps-info-high").text(getWeatherDegrees(tempHigh));
+		if (tempUnit=="C") {
+			windStr = wind+"m/s";
+		} else {
+			windStr = wind+" mph";
+		}
+		$("#wind").text(windStr);
+		$(".temps-info").fadeIn();
+		$("#wind").fadeIn();
 	});
 }
 

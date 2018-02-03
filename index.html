@@ -6,6 +6,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 		<script src="js/main.js"></script>
+		<script src="js/svg-injector.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,700" rel="stylesheet">
 		<link rel="stylesheet" href="css/style.css" title="Main Styles" type="text/css" media="screen" charset="utf-8">
 
 		<style>
@@ -17,22 +19,56 @@
 			<div class="title">
 				<h1>Weather App</h1>
 			</div>
-			<div class="weather hide">
-				<input class="location-input" value="Battersea, GB">
-				<input class="location-submit" value="submit" type="submit">
-				<div class="location-container"><span class="location">Battersea, GB</span></div>
-				<div class="weather-circle">
-					<div class="weather-main">
-						<img class="weather-main-icon" id="weather-icon" src="img/Thermometer-50.svg">
-						<p id="weather-text">Broken Clouds</p>
-						<h2 id="weather-temp">9ºC</h2>
+			<input class="location-input" id="location-input" value="Battersea, GB">
+			<input class="location-btn" value="location" id="location-btn-gps" type="submit">
+			<input class="location-btn" value="submit" id="location-btn-submit" type="submit">
+			<div class="weather-card">
+				<div class="cover">
+					<img class="weather-main-icon svg-replace" src="img/Thermometer-50.svg">
+					<h1>Weather App</h1>
+				</div>
+				<div class="weather-main-info">
+					<img class="weather-main-icon svg-replace" id="weather-icon" src="img/Thermometer-50.svg">
+					<p id="weather-main-text">Broken Clouds</p>
+				</div>
+				<div class="weather-details">
+					<div class="location-container"><span class="location">Battersea, GB</span></div>
+					<div class="weather-details-temps">
+						<div class="temps-info">
+							<h2 class="temps-info-number" id="temps-info-low">4ºC</h2>
+							<p class="temps-info-label">Lows</p>
+						</div>
+						<div class="temps-info">
+							<h2 class="temps-info-number" id="temps-info-high">10ºC</h2>
+							<p class="temps-info-label">Highs</p>
+						</div>
+					</div>
+					<div class="extra-details">
+						<div class="extra-details-item small-left">
+							<p class="extras-number" id="humidity">60%</p>
+							<p class="extras-label">Humidity</p>
+						</div>
+						<div class="extra-details-item details-item-large" id="wind-info">
+							<p class="extras-number" id="wind">60%</p>
+							<p class="extras-label">Wind</p>
+						</div>
+						<div class="extra-details-item small-right">
+							<p class="extras-number" id="pressure">60%</p>
+							<p class="extras-label">Pressure</p>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
 		
 		<script>
-
+/*
+		  // Elements to inject
+		  var mySVGsToInject = document.querySelectorAll('img.svg-replace');
+		
+		  // Do the injection
+		  SVGInjector(mySVGsToInject);
+*/
 		</script>
 	</body>
 </html>

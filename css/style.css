@@ -239,14 +239,42 @@ background: linear-gradient(to top, #FFC837, #FF8008); /* W3C, IE 10+/ Edge, Fir
 	height: 100%;
 	z-index: 1;
 	transition: all 0.7s ease-in-out;
-	padding-top: 50%;
+	padding-top: 40%;
 }
 .cover.hide {
 	top: -150%;
 }
 @media (max-width: 480px) {
+	.cover {
+		padding-top: 30%;
+	}
 	.title {
 		font-size: 0rem;
 		opacity: 0;
 	}
+	.location {
+		font-size: 1.2rem;
+	}
+	.location-container {
+		padding: 20px 10px 8px ;
+	}
+	.weather-details-temps, .extra-details {
+		margin-top: 0.1rem;
+	}
+	.temps-info-number {
+		font-size: 2.5rem;
+	}
+	.details-item-large .extras-number {
+		font-size: 1.5rem;
+	}
+	.extra-details-item {
+		padding-top: 5px;
+		padding-bottom: 0px;
+	}
+	.details-item-large {
+		padding-top: 15px;
+	}
+
+
+
 }

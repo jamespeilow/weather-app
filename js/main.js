@@ -35,7 +35,7 @@ function getLocation() {
 function showPosition(position) {
 	lat = position.coords.latitude;
 	lon = position.coords.longitude;
-	getWeather(lat, lon);
+	getWeather(lat, lon, "gps");
 }
 
 function getLocationByIp() {
@@ -43,7 +43,7 @@ function getLocationByIp() {
 	$.getJSON(url, function(data) {
 		returnedData = data;
 		console.log(data);
-		getWeather(returnedData.latitude, returnedData.longitude);
+		getWeather(returnedData.latitude, returnedData.longitude, "ip");
 	});	
 }
 function getLocationFromInput() {
@@ -59,18 +59,19 @@ function getLocationFromInput() {
 		coords = data.results[0].geometry.location;
 		var googleData=[data];
 		console.log(googleData);
-		getWeather(coords.lat, coords.lng);
+		var address = data.results[0].formatted_address;
+		getWeather(coords.lat, coords.lng, "google", address);
 	}
 }
 
 
 
-function getWeather(lat, lon) {
+function getWeather(lat, lon, searchType, locationName) {
 	var url = "https://fcc-weather-api.glitch.me/api/current?lat="+lat+"&lon="+lon;
 	$.getJSON(url, function(data) {
 		console.log(data);
 		returnedData = data;
-		debug = data;
+		apiData = data;
 		tempUnit="C";
 		tempLow=returnedData.main.temp_min;
 		tempHigh=returnedData.main.temp_max;
@@ -85,15 +86,17 @@ function getWeather(lat, lon) {
 		$("#humidity").text(data.main.humidity+"%");
 		$("#wind").text((data.wind.speed).toFixed(1)+"m/s");
 		$("#pressure").text(data.main.pressure+'hPa');
-		$("#weather-main-text").text(toTitleCase(data.weather[0].description));
-		if (!data.name || !data.sys.country) {
-			$(".location").text(" ");
+		if (locationName) {
+			$(".location").text(locationName);
+			$("#location-input").val(locationName);
 		} else {
-			$(".location").text(data.name+", "+data.sys.country);
-			$("#location-input").val(data.name+", "+data.sys.country);
+			$(".location").text(returnedData.name+", "+returnedData.sys.country);
+			$("#location-input").val(returnedData.name+", "+returnedData.sys.country);	
 		}
-		$(".cover").addClass("hide");
+		$("#weather-main-text").text(toTitleCase(data.weather[0].description));
 	});
+
+	$(".cover").addClass("hide");
 }
 
 function getWeatherDegrees(temp, rounding=true) {

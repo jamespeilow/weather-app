@@ -6,6 +6,11 @@ var returnedData;
 var tempLow;
 var tempHigh;
 var wind;
+
+$.ajaxSetup({
+    async: false
+});
+
 $( document ).ready(function() {
 	console.log( "ready!" );
 	//getLocation();

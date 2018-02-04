@@ -53,7 +53,9 @@ function getLocationByIp() {
 }
 function getLocationFromInput() {
 	var inputValue = $("#location-input").val();
-	console.log('pressed');
+	if (!inputValue) {
+		getLocationByIp();
+	}
 	$.ajax({
 		type: "GET",
 		url: "https://maps.googleapis.com/maps/api/geocode/json?address="+encodeURIComponent(inputValue)+"&key=AIzaSyDlc1CDHP8y1ysWSI02biWlk0nNatQbHgY",

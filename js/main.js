@@ -9,11 +9,19 @@ var wind;
 $( document ).ready(function() {
 	console.log( "ready!" );
 	//getLocation();
-	$("#location-btn-gps").click(getLocation);
-	$("#location-btn-submit").click(getLocationFromInput);
+	$("#location-btn-gps").click(function(e) {
+		e.preventDefault();
+		getLocation();
+	});
+	$("#location-search").submit(function(e) {
+		e.preventDefault();
+		getLocationFromInput();
+		}
+	);
 	$(".temps-info").click(function() {
 		toggleTemp();
-	});	
+	});
+	$(".weather-card").fadeIn('slow');	
 });
 
 function getLocation() {
@@ -69,11 +77,13 @@ function getWeather(lat, lon) {
 		wind=data.wind.speed;
 		$(".weather-main-info").removeClass(weatherClass).addClass(getBodyWeatherClass(data));
 		weatherClass = getBodyWeatherClass(data);
-		$("#weather-icon").attr("src", "img/"+getWeatherIcon(data));
+		$(".weather-main-icon").addClass("hidden");
+		$("#"+getWeatherIcon(data)).removeClass("hidden");
+		//$("#weather-icon").attr("src", "img/"+getWeatherIcon(data));
 		$("#temps-info-low").text(getWeatherDegrees(tempLow));
 		$("#temps-info-high").text(getWeatherDegrees(tempHigh));
 		$("#humidity").text(data.main.humidity+"%");
-		$("#wind").text(data.wind.speed+"m/s");
+		$("#wind").text((data.wind.speed).toFixed(1)+"m/s");
 		$("#pressure").text(data.main.pressure+'hPa');
 		$("#weather-main-text").text(toTitleCase(data.weather[0].description));
 		if (!data.name || !data.sys.country) {
@@ -98,51 +108,34 @@ function tempConvert() {
 		//Convert to F
 		tempLow = tempLow*9/5+32;
 		tempHigh = tempHigh*9/5+32;
-		wind = (wind/0.44704).toFixed(2);
+		wind = (wind/0.44704).toFixed(1);
 		tempUnit = "F";
 	} else if (tempUnit=="F") {
 		tempLow = (tempLow-32)*5/9;
 		tempHigh = (tempHigh-32)*5/9;
-		wind = (wind*0.44704).toFixed(2);
+		wind = (wind*0.44704).toFixed(1);
 		tempUnit = "C";
 	}
 }
 
 function getWeatherIcon(weatherData) {
-	
-	var weatherIcon="";
-	switch (weatherData.weather[0].main) {
+	var weatherType = weatherData.weather[0].main;
+	switch (weatherType) {
 	case "Thunderstorm":
-		weatherIcon = "Cloud-Lightning.svg";
-		break;
 	case "Drizzle":
-		weatherIcon = "Cloud-Drizzle.svg";
-		break;
 	case "Rain":
-		weatherIcon = "Cloud-Rain.svg";
-		break;
 	case "Snow":
-		weatherIcon = "Cloud-Snow-Alt.svg";
-		break;
 	case "Atmosphere":
-		weatherIcon = "Cloud-Fog-Alt.svg";
-		break;
 	case "Clear":
-		weatherIcon = "Sun.svg";
-		break;
 	case "Clouds":
-		weatherIcon = "Cloud.svg";
-		break;
 	case "Extreme":
-		weatherIcon = "Tornado.svg";
-		break;
 	case "Additional":
-		weatherIcon = "Wind.svg";
+		weatherIconId = "weather-icon-"+weatherType.toLowerCase();
 		break;
 	default:
-		weatherIcon = "Thermometer-50.svg";
+		weatherIconId = "weather-icon-default";
 	}
-	return weatherIcon;
+	return weatherIconId;
 }
 
 function getBodyWeatherClass(weatherData) {

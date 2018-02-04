@@ -9,6 +9,7 @@
 		<script src="js/svg-injector.js"></script>
 		<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,700" rel="stylesheet">
 		<link rel="stylesheet" href="css/style.css" title="Main Styles" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 		<style>
 			
@@ -19,16 +20,31 @@
 			<div class="title">
 				<h1>Weather App</h1>
 			</div>
-			<input class="location-input" id="location-input" value="Battersea, GB">
-			<input class="location-btn" value="location" id="location-btn-gps" type="submit">
-			<input class="location-btn" value="submit" id="location-btn-submit" type="submit">
+			<div class="search-bar">
+				<form id="location-search">
+					<input class="location-input" id="location-input" value="Battersea, GB">
+					<div class="btn-group">
+						<input class="location-btn" value="Go" id="location-btn-submit" type="submit">
+						<button class="location-btn" value="location" id="location-btn-gps"><i class="fa fa fa-map-marker"></i></button>
+					</div>
+				</form>
+			</div>
 			<div class="weather-card">
 				<div class="cover">
-					<img class="weather-main-icon svg-replace" src="img/Thermometer-50.svg">
+					<img class="weather-cover-icon" src="img/Thermometer-50.svg">
 					<h1>Weather App</h1>
 				</div>
 				<div class="weather-main-info">
-					<img class="weather-main-icon svg-replace" id="weather-icon" src="img/Thermometer-50.svg">
+					<img class="weather-main-icon svg-replace" id="weather-icon-default" src="img/Thermometer-50.svg">
+					<img class="weather-main-icon svg-replace hidden" id="weather-icon-thunderstorm" src="img/Cloud-Lightning.svg">
+					<img class="weather-main-icon svg-replace hidden" id="weather-icon-drizzle" src="img/Cloud-Drizzle.svg">
+					<img class="weather-main-icon svg-replace hidden" id="weather-icon-rain" src="img/Cloud-Rain.svg">
+					<img class="weather-main-icon svg-replace hidden" id="weather-icon-snow" src="img/Cloud-Snow-Alt.svg">
+					<img class="weather-main-icon svg-replace hidden" id="weather-icon-atmosphere" src="img/Cloud-Fog-Alt.svg">
+					<img class="weather-main-icon svg-replace hidden" id="weather-icon-clear" src="img/Sun.svg">
+					<img class="weather-main-icon svg-replace hidden" id="weather-icon-clouds" src="img/Cloud.svg">
+					<img class="weather-main-icon svg-replace hidden" id="weather-icon-extreme" src="img/Tornado.svg">
+					<img class="weather-main-icon svg-replace hidden" id="weather-icon-additional" src="img/Wind.svg">
 					<p id="weather-main-text">Broken Clouds</p>
 				</div>
 				<div class="weather-details">
@@ -62,13 +78,13 @@
 		</div>
 		
 		<script>
-/*
+
 		  // Elements to inject
 		  var mySVGsToInject = document.querySelectorAll('img.svg-replace');
 		
 		  // Do the injection
 		  SVGInjector(mySVGsToInject);
-*/
+
 		</script>
 	</body>
 </html>
